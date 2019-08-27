@@ -1019,7 +1019,7 @@ def getLastChangeTimeElapsed(request):
 def getCyninMessageFactory():
     return _
 
-def addDiscussion(portal,discussion,tags,context,discussionTitle=''):
+def addDiscussion(portal,discussion,tags,context,discussionTitle='',isPrivate=False):
     from ubify.coretypes import generateDiscussionTitle
     if discussion == '':
         return None
@@ -1047,6 +1047,9 @@ def addDiscussion(portal,discussion,tags,context,discussionTitle=''):
             except AttributeError:
                 values = []
             objDiscussion.setSubject(values)
+
+        if isPrivate:
+            objDiscussion.getField('privatequestion').getMutator(objDiscussion)(isPrivate)
 
         objDiscussion.reindexObject()
         notify(ObjectInitializedEvent(objDiscussion))
